@@ -2,6 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
+db.sqlite3
+manage.py
+requirements.txt
+venv
+dicas
+
+
 
 # C extensions
 *.so
