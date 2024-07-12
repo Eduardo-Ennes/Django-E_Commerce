@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
-from django.contrib.auth.models import User
 from produto.models import Produto, Variacao
 from perfil.models import Perfil
 from django.contrib import messages
@@ -182,18 +181,28 @@ class Carrinho(View):
 
 
 class ResumoDaCompra(View):
+    # Só poderam realizar pagamentos usuario que possuem cadastro
     def get(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
+            '''
+            Se o usuario não estiver logado, ele não poderá fazer o pagamento, será redirecionado para a pagina de cadastro
+            '''
             return redirect('criar')
 
         perfil = Perfil.objects.filter(usuario=self.request.user).exists()
         if not perfil:
+            '''
+            Aqui verificamos se o usuario existe, se não o usuario será redirecionado a pagaina de castro
+            '''
             messages.error(
                 self.request,
                 'usuário sem perfil'
             )
             return redirect('criar')
         if not self.request.session.get('carrinho'):
+            '''
+            Verificamos se o carrinho possui algum produto, se não redireciona para a pagina principal 
+            '''
             messages.error(
                 self.request,
                 'O carrinho não possui nenhum produto'

@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from produto.views import ListaProduto, DetalheProduto, AdicionarAoCarrinho, RemoverDoCarrinho, Carrinho, ResumoDaCompra
-from perfil.views import Criar, Atualizar, Login, Logouth, BasePerfil
+from perfil.views import Criar, Login, Logouth, BasePerfil
 from pedido.views import Pagar, SalvarPedido, Detalhe
 
 urlpatterns = [
@@ -41,7 +41,7 @@ urlpatterns = [
     
     #Perfil
     path('criarperfil/', Criar.as_view(), name='criar'),
-    path('atualizar/', Atualizar.as_view(), name='atualizar'),
+    # path('atualizar/', Atualizar.as_view(), name='atualizar'),
     path('login/', Login.as_view(), name='login'),
     path('logouth/', Logouth.as_view(), name='logouth'),
     
