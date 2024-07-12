@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
-from django.http import HttpResponse
+from django.contrib.auth.models import User
 from produto.models import Produto, Variacao
+from perfil.models import Perfil
 from django.contrib import messages
 from pprint import pprint
 
@@ -143,7 +144,7 @@ class RemoverDoCarrinho(View):
         variacao_id = self.request.GET.get('vid')
         if not variacao_id:
             '''
-            aqui verificamos se o id existe, se não redirecionamos o usuario para a pagina em que ela estava 
+            aqui verificamos se o id do produto existe, se não redirecionamos o usuario para a pagina em que ela estava 
             '''
             return redirect(self.request.META['HTTP_REFERER'])
         
@@ -155,7 +156,7 @@ class RemoverDoCarrinho(View):
         
         if variacao_id not in self.request.session['carrinho']:
             '''
-            aqui verificamos se o id ja está dentro do carrinho, se não redirecionamos o usuario para a pagina em que ela estava.
+            aqui verificamos se o id do produto não está no carrinho, se não redirecionamos o usuario para a pagina que ele estava.
             '''
             return redirect(self.request.META['HTTP_REFERER'])
         
@@ -182,4 +183,24 @@ class Carrinho(View):
 
 class ResumoDaCompra(View):
     def get(self, *args, **kwargs):
-        return HttpResponse('Finalizar')
+        if not self.request.user.is_authenticated:
+            return redirect('criar')
+
+        perfil = Perfil.objects.filter(usuario=self.request.user).exists()
+        if not perfil:
+            messages.error(
+                self.request,
+                'usuário sem perfil'
+            )
+            return redirect('criar')
+        if not self.request.session.get('carrinho'):
+            messages.error(
+                self.request,
+                'O carrinho não possui nenhum produto'
+            )
+            return redirect('Lista_produto')
+        contexto = {
+            'usuario': self.request.user,
+            'carrinho': self.request.session['carrinho'],
+        }
+        return render(self.request, 'produto/resumodacompra.html', contexto)

@@ -10,7 +10,11 @@ class Perfil(models.Model):
         verbose_name = 'Perfil'
         verbose_name_plural = 'Perfis'
     
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    '''
+    Este campo deve ser OneToOneField, para que a busca feita na view resumodacompra funcionasse.
+    Antes era ForeignKey.
+    '''
     idade = models.PositiveIntegerField()
     data_nascimento = models.DateField()
     cpf = models.CharField(max_length=11)
