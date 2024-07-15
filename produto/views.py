@@ -17,6 +17,7 @@ class ListaProduto(ListView):
     context_object_name = 'produtos'
     # context_object_name -> já faz a busca dos campos no banco de dados 
     paginate_by = 10
+    ordering = ['-id']
 
 
 
@@ -88,6 +89,7 @@ class AdicionarAoCarrinho(View):
             return redirect(self.request.META['HTTP_REFERER'])
         
         if not self.request.session.get('carrinho'):
+            # Aqui criamos a sessão do carrinho, que é um dicionario
             self.request.session['carrinho'] = {} 
             self.request.session.save()
             
@@ -126,7 +128,7 @@ class AdicionarAoCarrinho(View):
         Estas variaveis acima estão sendo atribuido a elas os valores que estão dentro do banco de dados, para melhor entendimento olhar o models. O model Produto está linkado ao model Variacao. A variavel variacao esta com o valor do model Variacao.
         '''
         self.request.session.save()
-        pprint(carrinho)
+        # pprint(carrinho)
 
         messages.success(
             self.request,

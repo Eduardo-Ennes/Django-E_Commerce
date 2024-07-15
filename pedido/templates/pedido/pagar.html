@@ -1,5 +1,75 @@
 {% extends "static/_base.html" %}
+{% load omfilters %}
+{% load static %}
 
 {% block conteudo %}
+<main class="container mt-4 mb-4">
+    <div class="row">
+        <div class="col">
+            <h3>Escolha o método de pagamento</h3>
+            <p>Para o desenvolvedor: adicione seu método de pagamento preferido.</p>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col">
+            <h3>Pedido</h3>
+
+            <!-- A variavel e o banco de dados que estão neste template vem da class Pagar -->    
+            <div class="row mt-4">
+                <div class="col-lg-2 font-weight-bold">Número do pedido:</div>
+                <div class="col-lg-4">{{pedido.id}}</div>
+                <div class="col-lg-2 font-weight-bold">Total a pagar:</div>
+                <div class="col-lg-4">{{pedido.total | formata_preco}}</div>
+
+                <div class="col-lg-2 font-weight-bold">QTD. Itens:</div>
+                <div class="col-lg-4">{{pedido.qtd_total}}</div>
+                <div class="col-lg-2 font-weight-bold">Status:</div>
+                <div class="col-lg-4">{{pedido.get_status_display}}</div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <h3>Produtos</h3>
+                </div>
+            </div>
+
+            <div class="table-responsive mt-3">
+                <table class="table">
+                    <tr>
+                        <th class="d-none d-lg-block">Imagem</th>
+                        <th>Produto</th>
+                        <th>V.</th>
+                        <th>QTD.</th>
+                        <th>Total</th>
+                    </tr>
+
+                    {% for c in pedido.itempedido_set.all %}
+                    <!-- Esse for e na base de dados ItemPedido -->
+                    <tr>
+                        <td class="d-none d-lg-block">
+                            <img class="cart-img" src="{%get_media_prefix%}{{c.imagem}}">
+                            <!-- {{get_media_prefix}} necessario para carregar a imagem e importar o load static -->
+                        </td>
+                        <td>{{c.produto}}</td>
+                        <td>{{c.variacao}}</td>
+                        <td>{{c.quantidade}}</td>
+                        {% if c.preco_promocional %}
+                            <td>{{c.preco_promocional}}</td>
+                        {% else %}
+                            <td>{{c.preco}}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <a href="#" class="btn btn-primary btn-block btn-lg">Pagar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 {% endblock conteudo %}

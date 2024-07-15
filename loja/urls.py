@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from produto.views import ListaProduto, DetalheProduto, AdicionarAoCarrinho, RemoverDoCarrinho, Carrinho, ResumoDaCompra
 from perfil.views import Criar, Login, Logouth, BasePerfil
-from pedido.views import Pagar, SalvarPedido, Detalhe
+from pedido.views import Pagar, SalvarPedido, Detalhe, Lista
 
 urlpatterns = [
     #Admin
@@ -35,9 +35,10 @@ urlpatterns = [
     path('resumodacompra/', ResumoDaCompra.as_view(), name='resumodacompra'),
     
     #Pedido
-    path('pagar/', Pagar.as_view(), name='Pagar'),
+    path('pagar/<int:pk>', Pagar.as_view(), name='Pagar'),
     path('salvarpedido/', SalvarPedido.as_view(), name='salvarpedido'),
-    path('detalhe/', Detalhe.as_view(), name='detalhe'),
+    path('lista/', Lista.as_view(), name='lista'),
+    path('detalhe/<int:pk>', Detalhe.as_view(), name='detalhe'),
     
     #Perfil
     path('criarperfil/', Criar.as_view(), name='criar'),
