@@ -11,7 +11,7 @@ omfilters -> é um arquivo que há funções como formatar para a moeda do real 
         <div class="card-columns">
             {% for produto in produtos %}
             <div class="card">
-                <a href="{{produto.slug}}">
+                <a href="{% url "Detalhe_produto" produto.slug %}">
                     <img class="card-img-top" src="{{produto.imagem.url}}" alt="{{produto.nome}}">
                 </a>
                 <div class="card-body">
@@ -34,7 +34,7 @@ omfilters -> é um arquivo que há funções como formatar para a moeda do real 
                     </div>
                 </div>
                 <div class="card-footer bg-transparent border-top-light-custom text-center">
-                    <a href="{{produto.slug}}" class="btn btn-primary btn-sm m-1 btn-block">
+                    <a href="{% url "Detalhe_produto" produto.slug %}" class="btn btn-primary btn-sm m-1 btn-block">
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                         Comprar
                     </a>

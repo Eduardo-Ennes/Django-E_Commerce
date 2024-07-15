@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -5,7 +7,7 @@ from django.views import View
 from produto.models import Produto, Variacao
 from perfil.models import Perfil
 from django.contrib import messages
-from pprint import pprint
+from django.db.models import Q
 
 
 
@@ -19,6 +21,29 @@ class ListaProduto(ListView):
     paginate_by = 10
     ordering = ['-id']
 
+
+class Busca(ListaProduto):
+    '''
+    Aqui fazemos a busca personalizada
+    '''
+    def get_queryset(self, *args, **kwargs):
+        termo = self.request.GET.get('termo') or self.request.session['termo']
+        qs = super().get_queryset(*args, **kwargs)
+        
+        if not termo:
+            return qs
+        
+        self.request.session['termo'] = termo
+        
+        qs = qs.filter(
+            Q(nome__icontains=termo) 
+        )
+        
+        self.request.session.save()
+        return qs
+        '''
+        Criar umas session foi importante para apenas mostrar os resultados relacionados na busca. Sem a session estavamos buscando um valor, porem ele estava sendo mostrado primeiro e logo em seguida valores que nao tinham correlação alguma. 
+        '''
 
 
 class DetalheProduto(DetailView):

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from produto.views import ListaProduto, DetalheProduto, AdicionarAoCarrinho, RemoverDoCarrinho, Carrinho, ResumoDaCompra
+from produto.views import ListaProduto, DetalheProduto, AdicionarAoCarrinho, RemoverDoCarrinho, Carrinho, ResumoDaCompra, Busca 
 from perfil.views import Criar, Login, Logouth, BasePerfil
 from pedido.views import Pagar, SalvarPedido, Detalhe, Lista
 
@@ -33,6 +33,7 @@ urlpatterns = [
     path('removerdocarrinho/', RemoverDoCarrinho.as_view(), name='removerdocarrinho'),
     path('carrinho/', Carrinho.as_view(), name='Carrinho'),
     path('resumodacompra/', ResumoDaCompra.as_view(), name='resumodacompra'),
+    path('busca/', Busca.as_view(), name='busca'),
     
     #Pedido
     path('pagar/<int:pk>', Pagar.as_view(), name='Pagar'),
